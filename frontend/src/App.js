@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
 import { signout } from './actions/userActions';
@@ -20,18 +20,27 @@ import ProductEditScreen from './screens/ProductEditScreen';
 import OrderListScreen from './screens/OrderListScreen';
 import UserListScreen from './screens/UserListScreen';
 import UserEditScreen from './screens/UserEditScreen';
-import SellerRoute from './components/SellerRoute';
-import SellerScreen from './screens/SellerScreen';
 import SearchBox from './components/SearchBox';
 import SearchScreen from './screens/SearchScreen';
 import { listProductCategories } from './actions/productActions';
 import LoadingBox from './components/LoadingBox';
 import MessageBox from './components/MessageBox';
 import MapScreen from './screens/MapScreen';
+import HighlightListScreen from './screens/HighlightListScreen';
+import HighlightEditScreen from './screens/HighlightEditScreen';
+import InsightListScreen from './screens/InsightListScreen';
+import InsightEditScreen from './screens/InsightEditScreen';
+import Footer from './components/Footer';
+import { listFooters } from './actions/footerActions';
+import FooterListScreen from './screens/FooterListScreen';
+import FooterEditScreen from './screens/FooterEditScreen';
+import Navbar from './components/Navbar';
+import { listNavbars } from './actions/navbarActions';
+import NavbarListScreen from './screens/NavbarListScreen';
+import NavbarEditScreen from './screens/NavbarEditScreen';
 
 function App() {
   const cart = useSelector((state) => state.cart);
-  const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const { cartItems } = cart;
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
@@ -46,202 +55,252 @@ function App() {
     error: errorCategories,
     categories,
   } = productCategoryList;
+
+  const footerList = useSelector((state) => state.footerList);
+  const {
+    loading: loadingFooters,
+    error:errorFooters,
+    footers,
+  } = footerList;
+
+  const navbarList = useSelector((state) => state.navbarList);
+  const {
+    loading: loadingNavbars,
+    error:errorNavbars,
+    navbars,
+  } = navbarList;
+
   useEffect(() => {
     dispatch(listProductCategories());
+    dispatch(listFooters());
+    dispatch(listNavbars());
   }, [dispatch]);
   return (
     <BrowserRouter>
       <div className="grid-container">
-        <header className="row">
-          <div>
-            <button
-              type="button"
-              className="open-sidebar"
-              onClick={() => setSidebarIsOpen(true)}
-            >
-              <i className="fa fa-bars"></i>
-            </button>
-            <Link className="brand" to="/">
-              amazona
-            </Link>
-          </div>
-          <div>
+        <nav className="navbar fixed-top navbar-expand-lg navbar-light fixed-top">
+          <button
+            className="navbar-toggler"
+            type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <a className="navbar-brand ml-auto" href="/">
+          {loadingNavbars ? (
+              <LoadingBox></LoadingBox>
+            ) : errorNavbars ? (
+              <MessageBox variant="danger">{errorNavbars}</MessageBox>
+            ) : (
+              <>
+                {navbars.length === 0 && <MessageBox>No navbar Found</MessageBox>}
+                  {navbars.map((navbar) => (
+                    <Navbar key={navbar._id} navbar={navbar}></Navbar>
+                  ))}
+              </>
+            )}
+          </a>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
+                {loadingCategories ? (
+                  <LoadingBox></LoadingBox>
+                ) : errorCategories ? (
+                  <MessageBox variant="danger">{errorCategories}</MessageBox>
+                ) : (
+                  categories.map((c) => (
+                    <li className="nav-link" key={c}>
+                      <Link
+                        to={`/search/category/${c}`}
+                      >
+                        {c}
+                      </Link>
+                    </li>
+                  ))
+                )}
+              {userInfo && userInfo.isAdmin && (
+                <li className="nav-item dropdown">
+                  <li className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Admin
+                  </li>
+                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li>
+                      <Link to="/productlist">Products</Link>
+                    </li>
+                    <li>
+                      <Link to="/orderlist">Orders</Link>
+                    </li>
+                    <li>
+                      <Link to="/userlist">Users</Link>
+                    </li>
+                    <li>
+                      <Link to="/highlightlist">Highlights</Link>
+                    </li>
+                    <li>
+                      <Link to="/insightlist">Insights</Link>
+                    </li>
+                    <li>
+                      <Link to="/footerlist">Footer</Link>
+                    </li>
+                    <li>
+                      <Link to="/navbarlist">Navbar</Link>
+                    </li>
+                  </div>
+                </li>
+              )}
+            </ul>
+            <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
             <Route
               render={({ history }) => (
                 <SearchBox history={history}></SearchBox>
               )}
             ></Route>
-          </div>
-          <div>
-            <Link to="/cart">
-              Cart
-              {cartItems.length > 0 && (
-                <span className="badge">{cartItems.length}</span>
-              )}
-            </Link>
             {userInfo ? (
-              <div className="dropdown">
-                <Link to="#">
-                  {userInfo.name} <i className="fa fa-caret-down"></i>{' '}
-                </Link>
-                <ul className="dropdown-content">
-                  <li>
+              <li className="nav-item dropdown">
+                <li className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {userInfo.name}
+                </li>
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li className="dropdown-item">
                     <Link to="/profile">User Profile</Link>
                   </li>
-                  <li>
+                  <li className="dropdown-item">
                     <Link to="/orderhistory">Order History</Link>
                   </li>
-                  <li>
+                  <div className="dropdown-divider"></div>
+                  <li className="dropdown-item">
                     <Link to="#signout" onClick={signoutHandler}>
                       Sign Out
                     </Link>
                   </li>
-                </ul>
-              </div>
-            ) : (
-              <Link to="/signin">Sign In</Link>
+                </div>
+              </li>
+              ) : (
+              <li className="nav-item active">
+                <Link to="/signin"><i class="far fa-user fa-2x"></i></Link>
+              </li>
             )}
-            {userInfo && userInfo.isSeller && (
-              <div className="dropdown">
-                <Link to="#admin">
-                  Seller <i className="fa fa-caret-down"></i>
-                </Link>
-                <ul className="dropdown-content">
-                  <li>
-                    <Link to="/productlist/seller">Products</Link>
-                  </li>
-                  <li>
-                    <Link to="/orderlist/seller">Orders</Link>
-                  </li>
-                </ul>
-              </div>
-            )}
-            {userInfo && userInfo.isAdmin && (
-              <div className="dropdown">
-                <Link to="#admin">
-                  Admin <i className="fa fa-caret-down"></i>
-                </Link>
-                <ul className="dropdown-content">
-                  <li>
-                    <Link to="/dashboard">Dashboard</Link>
-                  </li>
-                  <li>
-                    <Link to="/productlist">Products</Link>
-                  </li>
-                  <li>
-                    <Link to="/orderlist">Orders</Link>
-                  </li>
-                  <li>
-                    <Link to="/userlist">Users</Link>
-                  </li>
-                </ul>
-              </div>
-            )}
+            </ul>
           </div>
-        </header>
-        <aside className={sidebarIsOpen ? 'open' : ''}>
-          <ul className="categories">
-            <li>
-              <strong>Categories</strong>
-              <button
-                onClick={() => setSidebarIsOpen(false)}
-                className="close-sidebar"
-                type="button"
-              >
-                <i className="fa fa-close"></i>
-              </button>
-            </li>
-            {loadingCategories ? (
-              <LoadingBox></LoadingBox>
-            ) : errorCategories ? (
-              <MessageBox variant="danger">{errorCategories}</MessageBox>
-            ) : (
-              categories.map((c) => (
-                <li key={c}>
-                  <Link
-                    to={`/search/category/${c}`}
-                    onClick={() => setSidebarIsOpen(false)}
-                  >
-                    {c}
-                  </Link>
-                </li>
-              ))
-            )}
-          </ul>
-        </aside>
-        <main>
-          <Route path="/seller/:id" component={SellerScreen}></Route>
-          <Route path="/cart/:id?" component={CartScreen}></Route>
-          <Route path="/product/:id" component={ProductScreen} exact></Route>
-          <Route
-            path="/product/:id/edit"
-            component={ProductEditScreen}
-            exact
-          ></Route>
-          <Route path="/signin" component={SigninScreen}></Route>
-          <Route path="/register" component={RegisterScreen}></Route>
-          <Route path="/shipping" component={ShippingAddressScreen}></Route>
-          <Route path="/payment" component={PaymentMethodScreen}></Route>
-          <Route path="/placeorder" component={PlaceOrderScreen}></Route>
-          <Route path="/order/:id" component={OrderScreen}></Route>
-          <Route path="/orderhistory" component={OrderHistoryScreen}></Route>
-          <Route
-            path="/search/name/:name?"
-            component={SearchScreen}
-            exact
-          ></Route>
-          <Route
-            path="/search/category/:category"
-            component={SearchScreen}
-            exact
-          ></Route>
-          <Route
-            path="/search/category/:category/name/:name"
-            component={SearchScreen}
-            exact
-          ></Route>
-          <Route
-            path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order/pageNumber/:pageNumber"
-            component={SearchScreen}
-            exact
-          ></Route>
-          <PrivateRoute
-            path="/profile"
-            component={ProfileScreen}
-          ></PrivateRoute>
-          <PrivateRoute path="/map" component={MapScreen}></PrivateRoute>
-          <AdminRoute
-            path="/productlist"
-            component={ProductListScreen}
-            exact
-          ></AdminRoute>
-          <AdminRoute
-            path="/productlist/pageNumber/:pageNumber"
-            component={ProductListScreen}
-            exact
-          ></AdminRoute>
-          <AdminRoute
-            path="/orderlist"
-            component={OrderListScreen}
-            exact
-          ></AdminRoute>
-          <AdminRoute path="/userlist" component={UserListScreen}></AdminRoute>
-          <AdminRoute
-            path="/user/:id/edit"
-            component={UserEditScreen}
-          ></AdminRoute>
-          <SellerRoute
-            path="/productlist/seller"
-            component={ProductListScreen}
-          ></SellerRoute>
-          <SellerRoute
-            path="/orderlist/seller"
-            component={OrderListScreen}
-          ></SellerRoute>
-
-          <Route path="/" component={HomeScreen} exact></Route>
-        </main>
-        <footer className="row center">All right reserved</footer>
+          <form class="form-inline ml-auto">
+              <Link to="/cart">
+                <i className="fas fa-cart-plus fa-2x"></i>
+                {cartItems.length > 0 && (
+                  <span>{cartItems.length}</span>
+                )}
+              </Link>
+          </form>
+          </nav>
+          <main>
+            <Route path="/cart/:id?" component={CartScreen}></Route>
+            <Route path="/product/:id" component={ProductScreen} exact></Route>
+            <Route
+              path="/product/:id/edit"
+              component={ProductEditScreen}
+              exact
+            ></Route>
+            <Route path="/signin" component={SigninScreen}></Route>
+            <Route path="/register" component={RegisterScreen}></Route>
+            <Route path="/shipping" component={ShippingAddressScreen}></Route>
+            <Route path="/payment" component={PaymentMethodScreen}></Route>
+            <Route path="/placeorder" component={PlaceOrderScreen}></Route>
+            <Route path="/order/:id" component={OrderScreen}></Route>
+            <Route path="/orderhistory" component={OrderHistoryScreen}></Route>
+            <Route
+              path="/search/name/:name?"
+              component={SearchScreen}
+              exact
+            ></Route>
+            <Route
+              path="/search/category/:category"
+              component={SearchScreen}
+              exact
+            ></Route>
+            <Route
+              path="/search/category/:category/name/:name"
+              component={SearchScreen}
+              exact
+            ></Route>
+            <Route
+              path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order/pageNumber/:pageNumber"
+              component={SearchScreen}
+              exact
+            ></Route>
+            <PrivateRoute
+              path="/profile"
+              component={ProfileScreen}
+            ></PrivateRoute>
+            <PrivateRoute path="/map" component={MapScreen}></PrivateRoute>
+            <AdminRoute
+              path="/productlist"
+              component={ProductListScreen}
+              exact
+            ></AdminRoute>
+            <AdminRoute
+              path="/productlist/pageNumber/:pageNumber"
+              component={ProductListScreen}
+              exact
+            ></AdminRoute>
+            <AdminRoute
+              path="/orderlist"
+              component={OrderListScreen}
+              exact
+            ></AdminRoute>
+            <AdminRoute path="/userlist" component={UserListScreen}></AdminRoute>
+            <AdminRoute
+              path="/user/:id/edit"
+              component={UserEditScreen}
+            ></AdminRoute>
+            <AdminRoute
+              path="/highlightlist"
+              component={HighlightListScreen}
+            ></AdminRoute>
+            <Route
+              path="/highlight/:id/edit"
+              component={HighlightEditScreen}
+              exact
+            ></Route>
+            <AdminRoute
+              path="/insightlist"
+              component={InsightListScreen}
+            ></AdminRoute>
+            <Route
+              path="/insight/:id/edit"
+              component={InsightEditScreen}
+              exact
+            ></Route>
+            <AdminRoute
+              path="/footerlist"
+              component={FooterListScreen}
+            ></AdminRoute>
+            <Route
+              path="/footer/:id/edit"
+              component={FooterEditScreen}
+              exact
+            ></Route>
+            <AdminRoute
+              path="/navbarlist"
+              component={NavbarListScreen}
+            ></AdminRoute>
+            <Route
+              path="/navbar/:id/edit"
+              component={NavbarEditScreen}
+              exact
+            ></Route>
+            <Route path="/" component={HomeScreen} exact></Route>
+          </main>
+          {loadingFooters ? (
+            <LoadingBox></LoadingBox>
+          ) : errorFooters ? (
+            <MessageBox variant="danger">{errorFooters}</MessageBox>
+          ) : (
+            <>
+              {footers.length === 0 && <MessageBox>No footer Found</MessageBox>}
+                {footers.map((footer) => (
+                  <Footer key={footer._id} footer={footer}></Footer>
+                ))}
+            </>
+          )}
       </div>
     </BrowserRouter>
   );

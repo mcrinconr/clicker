@@ -16,7 +16,6 @@ import {
 export default function ProductListScreen(props) {
   const { pageNumber = 1 } = useParams();
 
-  const sellerMode = props.match.path.indexOf('/seller') >= 0;
   const productList = useSelector((state) => state.productList);
   const { loading, error, products, page, pages } = productList;
 
@@ -46,13 +45,12 @@ export default function ProductListScreen(props) {
       dispatch({ type: PRODUCT_DELETE_RESET });
     }
     dispatch(
-      listProducts({ seller: sellerMode ? userInfo._id : '', pageNumber })
+      listProducts({ pageNumber })
     );
   }, [
     createdProduct,
     dispatch,
     props.history,
-    sellerMode,
     successCreate,
     successDelete,
     userInfo._id,
@@ -68,12 +66,16 @@ export default function ProductListScreen(props) {
     dispatch(createProduct());
   };
   return (
-    <div>
+    <div className="container">
       <div className="row">
-        <h1>Products</h1>
-        <button type="button" className="primary" onClick={createHandler}>
-          Create Product
+        <div className="col-6">
+        <h3>EDITA TUS PRODUCTOS</h3>
+        </div>
+        <div className="col-6 mr-auto">
+        <button type="button" className="btn btn-warning float-right" onClick={createHandler}>
+          Crear producto
         </button>
+        </div>
       </div>
 
       {loadingDelete && <LoadingBox></LoadingBox>}
@@ -89,8 +91,8 @@ export default function ProductListScreen(props) {
         <>
           <table className="table">
             <thead>
-              <tr>
-                <th>ID</th>
+              <tr className="table-active">
+                <th className="one">ID</th>
                 <th>NAME</th>
                 <th>PRICE</th>
                 <th>CATEGORY</th>
@@ -101,28 +103,34 @@ export default function ProductListScreen(props) {
             <tbody>
               {products.map((product) => (
                 <tr key={product._id}>
-                  <td>{product._id}</td>
+                  <td  className="one">{product._id}</td>
                   <td>{product.name}</td>
                   <td>{product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>
+                  <div className="row">
+                  <div className="col-md-6">
                     <button
                       type="button"
-                      className="small"
+                      className="small btn btn-secondary"
                       onClick={() =>
                         props.history.push(`/product/${product._id}/edit`)
                       }
                     >
                       Edit
                     </button>
+                    </div>
+                    <div className="col-md-6">
                     <button
                       type="button"
-                      className="small"
+                      className="small btn btn-secondary"
                       onClick={() => deleteHandler(product)}
                     >
                       Delete
                     </button>
+                    </div>
+                    </div>
                   </td>
                 </tr>
               ))}

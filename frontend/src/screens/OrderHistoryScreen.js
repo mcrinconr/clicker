@@ -12,8 +12,12 @@ export default function OrderHistoryScreen(props) {
     dispatch(listOrderMine());
   }, [dispatch]);
   return (
-    <div>
-      <h1>Order History</h1>
+    <div className="container">
+      <div className="row">
+        <div className="col-12">
+        <h3>HISTORIAL DE PEDIDOS</h3>
+        </div>
+      </div>
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
@@ -21,14 +25,14 @@ export default function OrderHistoryScreen(props) {
       ) : (
         <table className="table">
           <thead>
-            <tr>
-              <th>ID</th>
-              <th>DATE</th>
-              <th>TOTAL</th>
-              <th>PAID</th>
-              <th>DELIVERED</th>
-              <th>ACTIONS</th>
-            </tr>
+          <tr className="table-active">
+            <th className="one">ID</th>
+            <th className="one">DATE</th>
+            <th>TOTAL</th>
+            <th className="two">PAID</th>
+            <th>DELIVERED</th>
+            <th>ACTIONS</th>
+          </tr>
           </thead>
           <tbody>
             {orders.map((order) => (
@@ -43,9 +47,9 @@ export default function OrderHistoryScreen(props) {
                     : 'No'}
                 </td>
                 <td>
-                  <button
-                    type="button"
-                    className="small"
+                <button
+                  type="button"
+                  className="small btn btn-secondary"
                     onClick={() => {
                       props.history.push(`/order/${order._id}`);
                     }}

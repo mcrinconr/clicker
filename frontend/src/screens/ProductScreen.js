@@ -49,26 +49,26 @@ export default function ProductScreen(props) {
     }
   };
   return (
-    <div>
+    <div className="container">
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
         <div>
-          <Link to="/">Back to result</Link>
-          <div className="row top">
-            <div className="col-2">
+          <Link to="/">Volver</Link>
+          <div className="row contenedor-producto">
+            <div className="col-lg-6">
               <img
                 className="large"
                 src={product.image}
                 alt={product.name}
               ></img>
             </div>
-            <div className="col-1">
+            <div className="col-lg-3">
               <ul>
                 <li>
-                  <h1>{product.name}</h1>
+                  <h3>{product.name}</h3>
                 </li>
                 <li>
                   <Rating
@@ -76,52 +76,34 @@ export default function ProductScreen(props) {
                     numReviews={product.numReviews}
                   ></Rating>
                 </li>
-                <li>Pirce : ${product.price}</li>
+                <li>Price : ${product.price}</li>
                 <li>
-                  Description:
+                  Descripción:
                   <p>{product.description}</p>
                 </li>
               </ul>
             </div>
-            <div className="col-1">
-              <div className="card card-body">
-                <ul>
-                  <li>
-                    Seller{' '}
-                    <h2>
-                      <Link to={`/seller/${product.seller._id}`}>
-                        {product.seller.seller.name}
-                      </Link>
-                    </h2>
-                    <Rating
-                      rating={product.seller.seller.rating}
-                      numReviews={product.seller.seller.numReviews}
-                    ></Rating>
-                  </li>
-                  <li>
+            <div className="col-xl-3">
+              <div className="container card card-body-product border rounded">
+                  <div className="row">
+                      <div className="col-6">Precio</div>
+                      <div className="col-6">${product.price}</div>
+                  </div>
                     <div className="row">
-                      <div>Price</div>
-                      <div className="price">${product.price}</div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="row">
-                      <div>Status</div>
-                      <div>
+                      <div className="col-6">Estado</div>
+                      <div className="col-6">
                         {product.countInStock > 0 ? (
-                          <span className="success">In Stock</span>
+                          <span className="success">Disponible</span>
                         ) : (
-                          <span className="danger">Unavailable</span>
+                          <span className="danger">NO Disponible</span>
                         )}
                       </div>
                     </div>
-                  </li>
                   {product.countInStock > 0 && (
                     <>
-                      <li>
                         <div className="row">
-                          <div>Qty</div>
-                          <div>
+                          <div className="col-6">Cantidad</div>
+                          <div className="col-6">
                             <select
                               value={qty}
                               onChange={(e) => setQty(e.target.value)}
@@ -136,25 +118,21 @@ export default function ProductScreen(props) {
                             </select>
                           </div>
                         </div>
-                      </li>
-                      <li>
                         <button
                           onClick={addToCartHandler}
-                          className="primary block"
+                          className="btn btn-warning"
                         >
-                          Add to Cart
+                          Añadir al Carrito
                         </button>
-                      </li>
                     </>
                   )}
-                </ul>
               </div>
             </div>
           </div>
           <div>
-            <h2 id="reviews">Reviews</h2>
+            <h3 id="reviews">Reseñas</h3>
             {product.reviews.length === 0 && (
-              <MessageBox>There is no review</MessageBox>
+              <MessageBox>No hay reseñas</MessageBox>
             )}
             <ul>
               {product.reviews.map((review) => (
@@ -165,30 +143,32 @@ export default function ProductScreen(props) {
                   <p>{review.comment}</p>
                 </li>
               ))}
-              <li>
+            </ul>
                 {userInfo ? (
-                  <form className="form" onSubmit={submitHandler}>
-                    <div>
-                      <h2>Write a customer review</h2>
-                    </div>
-                    <div>
-                      <label htmlFor="rating">Rating</label>
+                  <form onSubmit={submitHandler} id="reseña">
+                  <h3>Escribe una reseña</h3>
+                    <div className="container">
+                    <div className="form-group row">
+                      <label className="col-sm-2 col-form-label" htmlFor="rating">Rating</label>
                       <select
+                        className="form-control col-sm-2"
                         id="rating"
                         value={rating}
                         onChange={(e) => setRating(e.target.value)}
                       >
                         <option value="">Select...</option>
-                        <option value="1">1- Poor</option>
-                        <option value="2">2- Fair</option>
-                        <option value="3">3- Good</option>
-                        <option value="4">4- Very good</option>
-                        <option value="5">5- Excelent</option>
+                        <option value="1">1- Malo</option>
+                        <option value="2">2- Regular</option>
+                        <option value="3">3- Bueno</option>
+                        <option value="4">4- Muy Bueno</option>
+                        <option value="5">5- Excelente</option>
                       </select>
                     </div>
-                    <div>
-                      <label htmlFor="comment">Comment</label>
-                      <textarea
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="comment">Comentar</label>
+                      <textarea class="form-control"
+                        rows="3"
                         id="comment"
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
@@ -196,8 +176,8 @@ export default function ProductScreen(props) {
                     </div>
                     <div>
                       <label />
-                      <button className="primary" type="submit">
-                        Submit
+                      <button className="btn btn-success" type="submit">
+                        Enviar
                       </button>
                     </div>
                     <div>
@@ -211,11 +191,9 @@ export default function ProductScreen(props) {
                   </form>
                 ) : (
                   <MessageBox>
-                    Please <Link to="/signin">Sign In</Link> to write a review
+                    Por favor <Link to="/signin">Inicia Sesión</Link> para escribir una reseña
                   </MessageBox>
                 )}
-              </li>
-            </ul>
           </div>
         </div>
       )}

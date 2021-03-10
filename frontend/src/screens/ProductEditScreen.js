@@ -71,7 +71,7 @@ export default function ProductEditScreen(props) {
     bodyFormData.append('image', file);
     setLoadingUpload(true);
     try {
-      const { data } = await Axios.post('/api/uploads', bodyFormData, {
+      const { data } = await Axios.post('/api/uploads/s3', bodyFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${userInfo.token}`,
@@ -87,10 +87,8 @@ export default function ProductEditScreen(props) {
 
   return (
     <div>
-      <form className="form" onSubmit={submitHandler}>
-        <div>
-          <h1>Edit Product {productId}</h1>
-        </div>
+      <form className="editar-textos" onSubmit={submitHandler}>
+          <h3>Edita el producto {productId}</h3>
         {loadingUpdate && <LoadingBox></LoadingBox>}
         {errorUpdate && <MessageBox variant="danger">{errorUpdate}</MessageBox>}
         {loading ? (
@@ -99,9 +97,9 @@ export default function ProductEditScreen(props) {
           <MessageBox variant="danger">{error}</MessageBox>
         ) : (
           <>
-            <div>
-              <label htmlFor="name">Name</label>
-              <input
+          <div class="form-group">
+            <label htmlFor="name">Nombre</label>
+            <input class="form-control form-control-lg"
                 id="name"
                 type="text"
                 placeholder="Enter name"
@@ -109,9 +107,10 @@ export default function ProductEditScreen(props) {
                 onChange={(e) => setName(e.target.value)}
               ></input>
             </div>
-            <div>
-              <label htmlFor="price">Price</label>
-              <input
+
+            <div class="form-group">
+              <label htmlFor="price">Precio</label>
+              <input class="form-control form-control-lg"
                 id="price"
                 type="text"
                 placeholder="Enter price"
@@ -119,9 +118,9 @@ export default function ProductEditScreen(props) {
                 onChange={(e) => setPrice(e.target.value)}
               ></input>
             </div>
-            <div>
-              <label htmlFor="image">Image</label>
-              <input
+            <div class="form-group">
+              <label htmlFor="image">Escribe la ruta de la imagen</label>
+              <input class="form-control form-control-lg"
                 id="image"
                 type="text"
                 placeholder="Enter image"
@@ -129,22 +128,24 @@ export default function ProductEditScreen(props) {
                 onChange={(e) => setImage(e.target.value)}
               ></input>
             </div>
-            <div>
-              <label htmlFor="imageFile">Image File</label>
-              <input
+            <label for="exampleFormControlTextarea1">O selecciónala desde tu computador</label>
+              <div class="form-row">
+                <div class="col-5 seleccionar-imagen">
+                  <input
                 type="file"
                 id="imageFile"
-                label="Choose Image"
+                label="Selecciona tu imagen"
                 onChange={uploadFileHandler}
-              ></input>
-              {loadingUpload && <LoadingBox></LoadingBox>}
-              {errorUpload && (
-                <MessageBox variant="danger">{errorUpload}</MessageBox>
-              )}
-            </div>
-            <div>
-              <label htmlFor="category">Category</label>
-              <input
+                  ></input>
+                  {loadingUpload && <LoadingBox></LoadingBox>}
+                  {errorUpload && (
+                    <MessageBox variant="danger">{errorUpload}</MessageBox>
+                  )}
+                </div>
+              </div>
+              <div class="form-group">
+                <label htmlFor="category">Categoría</label>
+                <input class="form-control form-control-lg"
                 id="category"
                 type="text"
                 placeholder="Enter category"
@@ -152,9 +153,9 @@ export default function ProductEditScreen(props) {
                 onChange={(e) => setCategory(e.target.value)}
               ></input>
             </div>
-            <div>
-              <label htmlFor="brand">Brand</label>
-              <input
+            <div class="form-group">
+              <label htmlFor="brand">Marca</label>
+              <input class="form-control form-control-lg"
                 id="brand"
                 type="text"
                 placeholder="Enter brand"
@@ -162,9 +163,9 @@ export default function ProductEditScreen(props) {
                 onChange={(e) => setBrand(e.target.value)}
               ></input>
             </div>
-            <div>
-              <label htmlFor="countInStock">Count In Stock</label>
-              <input
+            <div class="form-group">
+              <label htmlFor="countInStock">Cantidad disponible</label>
+              <input class="form-control form-control-lg col-sm-3"
                 id="countInStock"
                 type="text"
                 placeholder="Enter countInStock"
@@ -172,9 +173,9 @@ export default function ProductEditScreen(props) {
                 onChange={(e) => setCountInStock(e.target.value)}
               ></input>
             </div>
-            <div>
-              <label htmlFor="description">Description</label>
-              <textarea
+            <div class="form-group">
+              <label htmlFor= "description">Describe tu producto</label>
+              <textarea class="form-control form-control-lg"
                 id="description"
                 rows="3"
                 type="text"
@@ -183,12 +184,7 @@ export default function ProductEditScreen(props) {
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
             </div>
-            <div>
-              <label></label>
-              <button className="primary" type="submit">
-                Update
-              </button>
-            </div>
+            <button class="btn btn-warning btn-lg" type="submit">Actualizar</button>
           </>
         )}
       </form>

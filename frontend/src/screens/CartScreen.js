@@ -27,9 +27,11 @@ export default function CartScreen(props) {
     props.history.push('/signin?redirect=shipping');
   };
   return (
-    <div className="row top">
-      <div className="col-2">
-        <h1>Shopping Cart</h1>
+    <div className="cart-screen">
+    <h3>Shopping Cart</h3>
+    <div className="row">
+      <div className="col-md-8 my-auto">
+
         {error && <MessageBox variant="danger">{error}</MessageBox>}
         {cartItems.length === 0 ? (
           <MessageBox>
@@ -39,20 +41,21 @@ export default function CartScreen(props) {
           <ul>
             {cartItems.map((item) => (
               <li key={item.product}>
-                <div className="row">
-                  <div>
+                <div className="row seleccionar-imagen">
+                  <div className="col-auto my-auto">
                     <img
                       src={item.image}
                       alt={item.name}
                       className="small"
                     ></img>
                   </div>
-                  <div className="min-30">
+                  <div className="col-3 my-auto">
                     <Link to={`/product/${item.product}`}>{item.name}</Link>
                   </div>
-                  <div>
+                  <div className="col-2 my-auto">
                     <select
                       value={item.qty}
+                      className="rounded border btn-lg"
                       onChange={(e) =>
                         dispatch(
                           addToCart(item.product, Number(e.target.value))
@@ -66,10 +69,11 @@ export default function CartScreen(props) {
                       ))}
                     </select>
                   </div>
-                  <div>${item.price}</div>
-                  <div>
+                  <div className="col-3 my-auto">${item.price}</div>
+                  <div className=" col-1 my-auto">
                     <button
                       type="button"
+                      className="btn btn-outline-secondary btn-lg"
                       onClick={() => removeFromCartHandler(item.product)}
                     >
                       Delete
@@ -81,28 +85,23 @@ export default function CartScreen(props) {
           </ul>
         )}
       </div>
-      <div className="col-1">
-        <div className="card card-body">
-          <ul>
-            <li>
-              <h2>
-                Subtotal ({cartItems.reduce((a, c) => a + c.qty, 0)} items) : $
-                {cartItems.reduce((a, c) => a + c.price * c.qty, 0)}
-              </h2>
-            </li>
-            <li>
-              <button
-                type="button"
-                onClick={checkoutHandler}
-                className="primary block"
-                disabled={cartItems.length === 0}
-              >
-                Proceed to Checkout
-              </button>
-            </li>
-          </ul>
+      <div className="col-md-4">
+        <div className="card card-body rounded border" id="padding-lados">
+          <h2>
+            Subtotal ({cartItems.reduce((a, c) => a + c.qty, 0)} items) : $
+            {cartItems.reduce((a, c) => a + c.price * c.qty, 0)}
+          </h2>
+          <button
+            type="button"
+            onClick={checkoutHandler}
+            className="btn btn-warning btn-lg finalizar-pedido btn-lg"
+            disabled={cartItems.length === 0}
+          >
+            Finalizar pedido
+          </button>
         </div>
       </div>
+    </div>
     </div>
   );
 }

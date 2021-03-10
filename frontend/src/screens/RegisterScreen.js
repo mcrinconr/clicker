@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { register } from '../actions/userActions';
@@ -21,58 +21,61 @@ export default function RegisterScreen(props) {
   const dispatch = useDispatch();
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert('Password and confirm password are not match');
+    if(password !== confirmPassword){
+      alert('Password and confirm password are not a match')
     } else {
       dispatch(register(name, email, password));
     }
   };
+
   useEffect(() => {
-    if (userInfo) {
+    if(userInfo) {
       props.history.push(redirect);
     }
   }, [props.history, redirect, userInfo]);
+
   return (
     <div>
-      <form className="form" onSubmit={submitHandler}>
-        <div>
-          <h1>Create Account</h1>
-        </div>
+      <form className="editar-textos" onSubmit={submitHandler}>
+          <h3>Crear cuenta</h3>
         {loading && <LoadingBox></LoadingBox>}
         {error && <MessageBox variant="danger">{error}</MessageBox>}
-        <div>
-          <label htmlFor="name">Name</label>
-          <input
+        <div className="form-group">
+          <label htmlFor="name">Nombre</label>
+          <input className="form-control form-control-lg"
             type="text"
             id="name"
             placeholder="Enter name"
             required
             onChange={(e) => setName(e.target.value)}
           ></input>
-        </div>
-        <div>
-          <label htmlFor="email">Email address</label>
-          <input
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input className="form-control form-control-lg"
             type="email"
             id="email"
             placeholder="Enter email"
             required
             onChange={(e) => setEmail(e.target.value)}
           ></input>
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
+          </div>
+
+          <div class="form-group">
+            <label htmlFor="password">Contraseña</label>
+            <input class="form-control form-control-lg"
             type="password"
             id="password"
             placeholder="Enter password"
             required
             onChange={(e) => setPassword(e.target.value)}
           ></input>
-        </div>
-        <div>
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
+          </div>
+
+          <div class="form-group">
+            <label htmlFor="confirmPassword">Confirma tu contraseña</label>
+            <input class="form-control form-control-lg"
             type="password"
             id="confirmPassword"
             placeholder="Enter confirm password"
@@ -80,18 +83,16 @@ export default function RegisterScreen(props) {
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></input>
         </div>
+        <button type="button" className="btn btn-success">
+          Regístrate
+        </button>
         <div>
-          <label />
-          <button className="primary" type="submit">
-            Register
+          Ya tienes una cuenta? <span />
+          <button type="button" className="btn btn-primary">
+          <Link to={`/signin?redirect=${redirect}`} className="link-letras-blancas">
+            Inicia Sesión
+          </Link>
           </button>
-        </div>
-        <div>
-          <label />
-          <div>
-            Already have an account?{' '}
-            <Link to={`/signin?redirect=${redirect}`}>Sign-In</Link>
-          </div>
         </div>
       </form>
     </div>

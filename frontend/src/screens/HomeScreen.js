@@ -1,67 +1,88 @@
 import React, { useEffect } from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { Carousel } from 'react-responsive-carousel';
 import Product from '../components/Product';
+import Highlight from '../components/Highlight';
+import Insight from '../components/Insight';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { useDispatch, useSelector } from 'react-redux';
 import { listProducts } from '../actions/productActions';
-import { listTopSellers } from '../actions/userActions';
-import { Link } from 'react-router-dom';
+import { listHighlights } from '../actions/highlightActions';
+import { listInsights } from '../actions/insightActions';
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
 
-  const userTopSellersList = useSelector((state) => state.userTopSellersList);
+  const highlightList = useSelector((state) => state.highlightList);
   const {
-    loading: loadingSellers,
-    error: errorSellers,
-    users: sellers,
-  } = userTopSellersList;
+    loading: loadingHighlights,
+    error:errorHighlights,
+    highlights,
+  } = highlightList;
+
+  const insightList = useSelector((state) => state.insightList);
+  const {
+    loading: loadingInsights,
+    error:errorInsights,
+    insights,
+  } = insightList;
 
   useEffect(() => {
+    dispatch(listHighlights());
     dispatch(listProducts({}));
-    dispatch(listTopSellers());
+    dispatch(listInsights());
   }, [dispatch]);
   return (
-    <div>
-      <h2>Top Sellers</h2>
-      {loadingSellers ? (
+    <div className="container-fluid">
+      {loadingHighlights ? (
         <LoadingBox></LoadingBox>
-      ) : errorSellers ? (
-        <MessageBox variant="danger">{errorSellers}</MessageBox>
+      ) : errorHighlights ? (
+        <MessageBox variant="danger">{errorHighlights}</MessageBox>
       ) : (
         <>
-          {sellers.length === 0 && <MessageBox>No Seller Found</MessageBox>}
-          <Carousel showArrows autoPlay showThumbs={false}>
-            {sellers.map((seller) => (
-              <div key={seller._id}>
-                <Link to={`/seller/${seller._id}`}>
-                  <img src={seller.seller.logo} alt={seller.seller.name} />
-                  <p className="legend">{seller.seller.name}</p>
-                </Link>
-              </div>
+          {highlights.length === 0 && <MessageBox>No highlight Found</MessageBox>}
+
+            {highlights.map((highlight) => (
+              <Highlight key={highlight._id} highlight={highlight}></Highlight>
             ))}
-          </Carousel>
+
         </>
       )}
-      <h2>Featured Products</h2>
+      <div className="contenedor-productos">
+      <h2>PRODUCTOS DESTACADOS</h2>
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
         <>
-          {products.length === 0 && <MessageBox>No Product Found</MessageBox>}
-          <div className="row center">
-            {products.map((product) => (
-              <Product key={product._id} product={product}></Product>
-            ))}
+          {products.length === 0 && <MessageBox>Producto No Encontrado</MessageBox>}
+          <div className="container-fluid">
+            <div className="row justify-content-around">
+              {products.map((product) => (
+                <Product key={product._id} product={product}></Product>
+              ))}
+            </div>
           </div>
         </>
       )}
+      </div>
+      <div className="contenedor-insight">
+      {loadingInsights ? (
+        <LoadingBox></LoadingBox>
+      ) : errorInsights ? (
+        <MessageBox variant="danger">{errorInsights}</MessageBox>
+      ) : (
+        <>
+          {insights.length === 0 && <MessageBox>No insight Found</MessageBox>}
+            {insights.map((insight) => (
+              <Insight key={insight._id} insight={insight}></Insight>
+            ))}
+        </>
+      )}
+    </div>
     </div>
   );
 }

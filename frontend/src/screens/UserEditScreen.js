@@ -11,7 +11,6 @@ export default function UserEditScreen(props) {
   const userId = props.match.params.id;
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [isSeller, setIsSeller] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
   const userDetails = useSelector((state) => state.userDetails);
@@ -35,7 +34,6 @@ export default function UserEditScreen(props) {
     } else {
       setName(user.name);
       setEmail(user.email);
-      setIsSeller(user.isSeller);
       setIsAdmin(user.isAdmin);
     }
   }, [dispatch, props.history, successUpdate, user, userId]);
@@ -43,27 +41,23 @@ export default function UserEditScreen(props) {
   const submitHandler = (e) => {
     e.preventDefault();
     // dispatch update user
-    dispatch(updateUser({ _id: userId, name, email, isSeller, isAdmin }));
+    dispatch(updateUser({ _id: userId, name, email, isAdmin }));
   };
   return (
     <div>
-      <form className="form" onSubmit={submitHandler}>
-        <div>
-          <h1>Edit User {name}</h1>
-          {loadingUpdate && <LoadingBox></LoadingBox>}
-          {errorUpdate && (
-            <MessageBox variant="danger">{errorUpdate}</MessageBox>
-          )}
-        </div>
+      <form className="editar-textos" onSubmit={submitHandler}>
+          <h3>Edita el usuario {name}</h3>
+        {loadingUpdate && <LoadingBox></LoadingBox>}
+        {errorUpdate && <MessageBox variant="danger">{errorUpdate}</MessageBox>}
         {loading ? (
-          <LoadingBox />
+          <LoadingBox></LoadingBox>
         ) : error ? (
           <MessageBox variant="danger">{error}</MessageBox>
         ) : (
           <>
-            <div>
-              <label htmlFor="name">Name</label>
-              <input
+          <div className="form-group">
+            <label htmlFor="name">Nombre</label>
+            <input className="form-control form-control-lg"
                 id="name"
                 type="text"
                 placeholder="Enter name"
@@ -71,9 +65,10 @@ export default function UserEditScreen(props) {
                 onChange={(e) => setName(e.target.value)}
               ></input>
             </div>
-            <div>
+
+            <div className="form-group">
               <label htmlFor="email">Email</label>
-              <input
+              <input className="form-control form-control-lg"
                 id="email"
                 type="email"
                 placeholder="Enter email"
@@ -81,29 +76,18 @@ export default function UserEditScreen(props) {
                 onChange={(e) => setEmail(e.target.value)}
               ></input>
             </div>
-            <div>
-              <label htmlFor="isSeller">Is Seller</label>
+
+            <div className="form-check">
               <input
-                id="isSeller"
-                type="checkbox"
-                checked={isSeller}
-                onChange={(e) => setIsSeller(e.target.checked)}
-              ></input>
-            </div>
-            <div>
-              <label htmlFor="isAdmin">Is Admin</label>
-              <input
+                className="form-check-input my-2"
                 id="isAdmin"
                 type="checkbox"
                 checked={isAdmin}
                 onChange={(e) => setIsAdmin(e.target.checked)}
               ></input>
+              <label className="form-check-label" htmlFor="isAdmin">Es un administrador?</label>
             </div>
-            <div>
-              <button type="submit" className="primary">
-                Update
-              </button>
-            </div>
+            <button className="btn btn-warning btn-lg" type="submit">Actualizar</button>
           </>
         )}
       </form>

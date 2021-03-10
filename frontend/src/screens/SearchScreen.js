@@ -53,33 +53,33 @@ export default function SearchScreen(props) {
     return `/search/category/${filterCategory}/name/${filterName}/min/${filterMin}/max/${filterMax}/rating/${filterRating}/order/${sortOrder}/pageNumber/${filterPage}`;
   };
   return (
-    <div>
+    <div className="container">
       <div className="row">
         {loading ? (
           <LoadingBox></LoadingBox>
         ) : error ? (
           <MessageBox variant="danger">{error}</MessageBox>
         ) : (
-          <div>{products.length} Results</div>
+          <div className="col-6">{products.length} Resultados</div>
         )}
-        <div>
-          Sort by{' '}
+        <div className="col-6">
           <select
+           className="border float-right"
             value={order}
             onChange={(e) => {
               props.history.push(getFilterUrl({ order: e.target.value }));
             }}
           >
-            <option value="newest">Newest Arrivals</option>
-            <option value="lowest">Price: Low to High</option>
-            <option value="highest">Price: High to Low</option>
-            <option value="toprated">Avg. Customer Reviews</option>
+            <option value="newest">Nuevos Lanzamientos</option>
+            <option value="lowest">Precio: Menor a Mayor</option>
+            <option value="highest">Precio: Mayor a Menos</option>
+            <option value="toprated">Más Populares</option>
           </select>
         </div>
       </div>
       <div className="row top">
-        <div className="col-1">
-          <h3>Department</h3>
+        <div className="col-4">
+          <h3>Categorías</h3>
           <div>
             {loadingCategories ? (
               <LoadingBox></LoadingBox>
@@ -92,7 +92,7 @@ export default function SearchScreen(props) {
                     className={'all' === category ? 'active' : ''}
                     to={getFilterUrl({ category: 'all' })}
                   >
-                    Any
+                    Cualquiera
                   </Link>
                 </li>
                 {categories.map((c) => (
@@ -109,7 +109,7 @@ export default function SearchScreen(props) {
             )}
           </div>
           <div>
-            <h3>Price</h3>
+            <h3>Precio</h3>
             <ul>
               {prices.map((p) => (
                 <li key={p.name}>
@@ -126,7 +126,7 @@ export default function SearchScreen(props) {
             </ul>
           </div>
           <div>
-            <h3>Avg. Customer Review</h3>
+            <h3>Más Populares</h3>
             <ul>
               {ratings.map((r) => (
                 <li key={r.name}>
@@ -134,14 +134,14 @@ export default function SearchScreen(props) {
                     to={getFilterUrl({ rating: r.rating })}
                     className={`${r.rating}` === `${rating}` ? 'active' : ''}
                   >
-                    <Rating caption={' & up'} rating={r.rating}></Rating>
+                    <Rating caption={' & más'} rating={r.rating}></Rating>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
         </div>
-        <div className="col-3">
+        <div className="col-8">
           {loading ? (
             <LoadingBox></LoadingBox>
           ) : error ? (
