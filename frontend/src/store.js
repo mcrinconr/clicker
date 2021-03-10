@@ -50,11 +50,13 @@ import {
   footerListReducer,
   footerUpdateReducer,
   footerDetailsReducer,
+  footerDeleteReducer,
 } from './reducers/footerReducers';
 import {
   navbarListReducer,
   navbarUpdateReducer,
   navbarDetailsReducer,
+  navbarDeleteReducer,
 } from './reducers/navbarReducers';
 
 const initialState = {
@@ -109,10 +111,12 @@ const reducer = combineReducers({
   insightDetails: insightDetailsReducer,
   footerList: footerListReducer,
   footerUpdate: footerUpdateReducer,
+  footerDelete: footerDeleteReducer,
   footerDetails: footerDetailsReducer,
   navbarList: navbarListReducer,
   navbarUpdate: navbarUpdateReducer,
   navbarDetails: navbarDetailsReducer,
+  navbarDelete: navbarDeleteReducer,
 });
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

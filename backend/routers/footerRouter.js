@@ -63,5 +63,19 @@ footerRouter.put(
   })
 );
 
+footerRouter.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const footer = await Footer.findById(req.params.id);
+    if (footer) {
+      const deleteFooter = await footer.remove();
+      res.send({ message: 'Footer Deleted', footer: deleteFooter });
+    } else {
+      res.status(404).send({ message: 'Footer Not Found' });
+    }
+  })
+);
 
 export default footerRouter;

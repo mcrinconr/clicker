@@ -6,6 +6,9 @@ import {
   FOOTER_LIST_REQUEST,
   FOOTER_LIST_SUCCESS,
   FOOTER_LIST_FAIL,
+  FOOTER_DELETE_REQUEST,
+  FOOTER_DELETE_FAIL,
+  FOOTER_DELETE_SUCCESS,
   FOOTER_DETAILS_REQUEST,
   FOOTER_DETAILS_FAIL,
   FOOTER_DETAILS_SUCCESS,
@@ -58,5 +61,24 @@ export const updateFooter = (footer) => async (dispatch, getState) => {
         ? error.response.data.message
         : error.message;
     dispatch({ type: FOOTER_UPDATE_FAIL, error: message });
+  }
+};
+
+export const deleteFooter = (footerId) => async (dispatch, getState) => {
+  dispatch({ type: FOOTER_DELETE_REQUEST, payload: footerId });
+  const {
+    userSignin: { userInfo },
+  } = getState();
+  try {
+    const { data } = Axios.delete(`/api/footers/${footerId}`, {
+      headers: { Authorization: `Bearer ${userInfo.token}` },
+    });
+    dispatch({ type: FOOTER_DELETE_SUCCESS });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: FOOTER_DELETE_FAIL, payload: message });
   }
 };

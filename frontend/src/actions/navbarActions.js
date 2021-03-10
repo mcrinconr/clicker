@@ -6,6 +6,9 @@ import {
   NAVBAR_LIST_REQUEST,
   NAVBAR_LIST_SUCCESS,
   NAVBAR_LIST_FAIL,
+  NAVBAR_DELETE_REQUEST,
+  NAVBAR_DELETE_FAIL,
+  NAVBAR_DELETE_SUCCESS,
   NAVBAR_DETAILS_REQUEST,
   NAVBAR_DETAILS_FAIL,
   NAVBAR_DETAILS_SUCCESS,
@@ -58,5 +61,24 @@ export const updateNavbar = (navbar) => async (dispatch, getState) => {
         ? error.response.data.message
         : error.message;
     dispatch({ type: NAVBAR_UPDATE_FAIL, error: message });
+  }
+};
+
+export const deleteNavbar = (navbarId) => async (dispatch, getState) => {
+  dispatch({ type: NAVBAR_DELETE_REQUEST, payload: navbarId });
+  const {
+    userSignin: { userInfo },
+  } = getState();
+  try {
+    const { data } = Axios.delete(`/api/navbars/${navbarId}`, {
+      headers: { Authorization: `Bearer ${userInfo.token}` },
+    });
+    dispatch({ type: NAVBAR_DELETE_SUCCESS });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: NAVBAR_DELETE_FAIL, payload: message });
   }
 };

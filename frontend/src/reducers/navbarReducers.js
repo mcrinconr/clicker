@@ -6,6 +6,10 @@ import {
   NAVBAR_LIST_REQUEST,
   NAVBAR_LIST_SUCCESS,
   NAVBAR_LIST_FAIL,
+  NAVBAR_DELETE_REQUEST,
+  NAVBAR_DELETE_SUCCESS,
+  NAVBAR_DELETE_FAIL,
+  NAVBAR_DELETE_RESET,
   NAVBAR_DETAILS_REQUEST,
   NAVBAR_DETAILS_SUCCESS,
   NAVBAR_DETAILS_FAIL,
@@ -46,6 +50,21 @@ export const navbarUpdateReducer = (state = {}, action) => {
     case NAVBAR_UPDATE_FAIL:
       return { loading: false, error: action.payload };
     case NAVBAR_UPDATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const navbarDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case NAVBAR_DELETE_REQUEST:
+      return { loading: true };
+    case NAVBAR_DELETE_SUCCESS:
+      return { loading: false, success: true };
+    case NAVBAR_DELETE_FAIL:
+      return { loading: false, error: action.payload };
+    case NAVBAR_DELETE_RESET:
       return {};
     default:
       return state;

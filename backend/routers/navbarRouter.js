@@ -52,5 +52,19 @@ navbarRouter.put(
   })
 );
 
+navbarRouter.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const navbar = await Navbar.findById(req.params.id);
+    if (navbar) {
+      const deleteNavbar = await navbar.remove();
+      res.send({ message: 'Navbar Deleted', navbar: deleteNavbar });
+    } else {
+      res.status(404).send({ message: 'Navbar Not Found' });
+    }
+  })
+);
 
 export default navbarRouter;

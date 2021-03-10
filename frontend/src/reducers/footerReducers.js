@@ -6,6 +6,10 @@ import {
   FOOTER_LIST_REQUEST,
   FOOTER_LIST_SUCCESS,
   FOOTER_LIST_FAIL,
+  FOOTER_DELETE_REQUEST,
+  FOOTER_DELETE_SUCCESS,
+  FOOTER_DELETE_FAIL,
+  FOOTER_DELETE_RESET,
   FOOTER_DETAILS_REQUEST,
   FOOTER_DETAILS_SUCCESS,
   FOOTER_DETAILS_FAIL,
@@ -46,6 +50,21 @@ export const footerUpdateReducer = (state = {}, action) => {
     case FOOTER_UPDATE_FAIL:
       return { loading: false, error: action.payload };
     case FOOTER_UPDATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const footerDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case FOOTER_DELETE_REQUEST:
+      return { loading: true };
+    case FOOTER_DELETE_SUCCESS:
+      return { loading: false, success: true };
+    case FOOTER_DELETE_FAIL:
+      return { loading: false, error: action.payload };
+    case FOOTER_DELETE_RESET:
       return {};
     default:
       return state;
