@@ -1,4 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState }  from 'react';
+import {
+    Collapse,
+    Navbar,
+    NavbarToggler,
+    NavbarBrand,
+    Nav,
+    NavItem,
+    NavLink,
+    Container,
+    Row,
+    Col,
+    Jumbotron,
+    Button
+} from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
 import { signout } from './actions/userActions';
@@ -34,12 +48,15 @@ import Footer from './components/Footer';
 import { listFooters } from './actions/footerActions';
 import FooterListScreen from './screens/FooterListScreen';
 import FooterEditScreen from './screens/FooterEditScreen';
-import Navbar from './components/Navbar';
+import Navebar from './components/Navbar';
 import { listNavbars } from './actions/navbarActions';
 import NavbarListScreen from './screens/NavbarListScreen';
 import NavbarEditScreen from './screens/NavbarEditScreen';
 
 function App() {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
+  
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
   const userSignin = useSelector((state) => state.userSignin);
@@ -78,15 +95,16 @@ function App() {
   return (
     <BrowserRouter>
       <div className="grid-container">
-        <nav className="navbar fixed-top navbar-expand-lg navbar-light fixed-top">
-          <button
+        <Nav className="navbar fixed-top navbar-expand-lg navbar-light fixed-top">
+          <Button
+            onClick={toggle}
             className="navbar-toggler"
             type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent"
             aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
-          </button>
+          </Button>
           <a className="navbar-brand ml-auto" href="/">
           {loadingNavbars ? (
               <LoadingBox></LoadingBox>
@@ -96,12 +114,12 @@ function App() {
               <>
                 {navbars.length === 0 && <MessageBox>No navbar Found</MessageBox>}
                   {navbars.map((navbar) => (
-                    <Navbar key={navbar._id} navbar={navbar}></Navbar>
+                    <Navebar key={navbar._id} navbar={navbar}></Navebar>
                   ))}
               </>
             )}
           </a>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <Collapse isOpen={isOpen} className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
                 {loadingCategories ? (
                   <LoadingBox></LoadingBox>
@@ -181,7 +199,7 @@ function App() {
               </li>
             )}
             </ul>
-          </div>
+          </Collapse>
           <form class="form-inline ml-auto">
               <Link to="/cart">
                 <i className="fas fa-cart-plus fa-2x"></i>
@@ -190,7 +208,7 @@ function App() {
                 )}
               </Link>
           </form>
-          </nav>
+          </Nav>
           <main>
             <Route path="/cart/:id?" component={CartScreen}></Route>
             <Route path="/product/:id" component={ProductScreen} exact></Route>
