@@ -1,17 +1,12 @@
 import React, { useEffect, useState }  from 'react';
 import {
     Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
+    Dropdown,
     Nav,
-    NavItem,
-    NavLink,
-    Container,
-    Row,
-    Col,
-    Jumbotron,
-    Button
+    Button,
+    DropdownMenu,
+    DropdownItem,
+    DropdownToggle
 } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
@@ -56,7 +51,13 @@ import NavbarEditScreen from './screens/NavbarEditScreen';
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
-  
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggler = () => setDropdownOpen(prevState => !prevState);
+
+  const [dropdownOpen2, setDropdownOpen2] = useState(false);
+  const toggler2 = () => setDropdownOpen2(prevState => !prevState);
+
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
   const userSignin = useSelector((state) => state.userSignin);
@@ -137,34 +138,34 @@ function App() {
                   ))
                 )}
               {userInfo && userInfo.isAdmin && (
-                <li className="nav-item dropdown">
-                  <li className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <Dropdown caret isOpen={dropdownOpen} toggle={toggler} className="nav-item dropdown">
+                  <DropdownToggle tag="text" className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Admin
-                  </li>
-                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li>
+                  </DropdownToggle>
+                  <DropdownMenu className="dropdown-menu" color="link" aria-labelledby="navbarDropdown">
+                    <DropdownItem>
                       <Link to="/productlist">Products</Link>
-                    </li>
-                    <li>
+                    </DropdownItem>
+                    <DropdownItem>
                       <Link to="/orderlist">Orders</Link>
-                    </li>
-                    <li>
+                    </DropdownItem>
+                    <DropdownItem>
                       <Link to="/userlist">Users</Link>
-                    </li>
-                    <li>
+                    </DropdownItem>
+                    <DropdownItem>
                       <Link to="/highlightlist">Highlights</Link>
-                    </li>
-                    <li>
+                    </DropdownItem>
+                    <DropdownItem>
                       <Link to="/insightlist">Insights</Link>
-                    </li>
-                    <li>
+                    </DropdownItem>
+                    <DropdownItem>
                       <Link to="/footerlist">Footer</Link>
-                    </li>
-                    <li>
+                    </DropdownItem>
+                    <DropdownItem>
                       <Link to="/navbarlist">Navbar</Link>
-                    </li>
-                  </div>
-                </li>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
               )}
             </ul>
             <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -174,24 +175,26 @@ function App() {
               )}
             ></Route>
             {userInfo ? (
-              <li className="nav-item dropdown">
-                <li className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <li>
+              <Dropdown caret isOpen={dropdownOpen2} toggle={toggler2} className="nav-item dropdown">
+                <DropdownToggle tag="text"  className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   {userInfo.name}
-                </li>
-                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li className="dropdown-item">
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <DropdownItem className="dropdown-item">
                     <Link to="/profile">User Profile</Link>
-                  </li>
-                  <li className="dropdown-item">
+                  </DropdownItem>
+                  <DropdownItem className="dropdown-item">
                     <Link to="/orderhistory">Order History</Link>
-                  </li>
-                  <div className="dropdown-divider"></div>
-                  <li className="dropdown-item">
+                  </DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem className="dropdown-item">
                     <Link to="#signout" onClick={signoutHandler}>
                       Sign Out
                     </Link>
-                  </li>
-                </div>
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
               </li>
               ) : (
               <li className="nav-item active">
