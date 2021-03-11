@@ -28,14 +28,14 @@ export default function CartScreen(props) {
   };
   return (
     <div className="cart-screen">
-    <h3>Shopping Cart</h3>
+    <h3>Carrito de compras</h3>
     <div className="row">
       <div className="col-md-8 my-auto">
 
         {error && <MessageBox variant="danger">{error}</MessageBox>}
         {cartItems.length === 0 ? (
           <MessageBox>
-            Cart is empty. <Link to="/">Go Shopping</Link>
+            Carrito vacío. <Link to="/">Ve a comprar</Link>
           </MessageBox>
         ) : (
           <ul>
@@ -76,7 +76,7 @@ export default function CartScreen(props) {
                       className="btn btn-outline-secondary btn-lg"
                       onClick={() => removeFromCartHandler(item.product)}
                     >
-                      Delete
+                      Eliminar
                     </button>
                   </div>
                 </div>

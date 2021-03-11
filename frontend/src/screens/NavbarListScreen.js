@@ -49,7 +49,7 @@ export default function NavbarListScreen(props) {
           <thead>
             <tr>
               <th>NOMBRE DE TU EMPRESA</th>
-              <th>ACTIONS</th>
+              <th>ACCIONES</th>
             </tr>
           </thead>
           <tbody>

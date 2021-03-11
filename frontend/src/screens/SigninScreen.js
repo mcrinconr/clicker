@@ -61,7 +61,7 @@ export default function SigninScreen(props) {
           Eres nuevo? <span />
           <button type="button" className="btn btn-success">
           <Link to={`/register?redirect=${redirect}`} className="link-letras-blancas">
-            Create your account
+            Crear una cuenta
           </Link>
           </button>
         </div>

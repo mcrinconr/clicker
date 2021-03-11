@@ -77,7 +77,7 @@ export default function OrderScreen(props) {
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
     <div className="container">
-      <h3>Order {order._id}</h3>
+      <h3>Orden {order._id}</h3>
       <div className="row">
         <div className="col-lg-8">
           <div className="container">
@@ -93,7 +93,7 @@ export default function OrderScreen(props) {
                 </p>
                 {order.isDelivered ? (
                   <MessageBox variant="success">
-                    Delivered at {order.deliveredAt}
+                    Enviado a {order.deliveredAt}
                   </MessageBox>
                 ) : (
                   <MessageBox variant="danger">No enviado</MessageBox>
@@ -104,7 +104,7 @@ export default function OrderScreen(props) {
               <div className="card card-body-product border rounded">
                 <h3>Método de pago</h3>
                 <p>
-                  <strong>Method:</strong> {order.paymentMethod}
+                  <strong>Método:</strong> {order.paymentMethod}
                 </p>
                 {order.isPaid ? (
                   <MessageBox variant="success">

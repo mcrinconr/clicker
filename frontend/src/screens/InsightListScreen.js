@@ -76,7 +76,7 @@ export default function InsightListScreen(props) {
             <tr>
               <th>TÍTULO</th>
               <th>IMAGEN DE FONDO</th>
-              <th>ACTIONS</th>
+              <th>ACCIONES</th>
             </tr>
           </thead>
           <tbody>
@@ -94,7 +94,7 @@ export default function InsightListScreen(props) {
                       props.history.push(`/insight/${insight._id}/edit`)
                     }
                   >
-                    Edit
+                    Editar
                   </button>
                   </div>
                   <div className="col-md-6">
@@ -103,7 +103,7 @@ export default function InsightListScreen(props) {
                     className="small btn btn-secondary"
                     onClick={() => deleteHandler(insight)}
                   >
-                    Delete
+                    Eliminar
                   </button>
                   </div>
                   </div>

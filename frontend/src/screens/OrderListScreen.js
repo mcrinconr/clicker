@@ -43,12 +43,12 @@ export default function OrderListScreen(props) {
           <thead>
             <tr className="table-active">
               <th className="one">ID</th>
-              <th>USER</th>
-              <th className="one">DATE</th>
+              <th>USUARIO</th>
+              <th className="one">FECHA</th>
               <th className="two">TOTAL</th>
-              <th>PAID</th>
-              <th>DELIVERED</th>
-              <th>ACTIONS</th>
+              <th>PAGADO</th>
+              <th>ENVIADO</th>
+              <th>ACCIONES</th>
             </tr>
           </thead>
           <tbody>
@@ -74,7 +74,7 @@ export default function OrderListScreen(props) {
                       props.history.push(`/order/${order._id}`);
                     }}
                   >
-                    Details
+                    Detalles
                   </button>
                   </div>
                   <div className="col-md-6">
@@ -83,7 +83,7 @@ export default function OrderListScreen(props) {
                     className="small btn btn-secondary"
                     onClick={() => deleteHandler(order)}
                   >
-                    Delete
+                    Eliminar
                   </button>
                   </div>
                   </div>

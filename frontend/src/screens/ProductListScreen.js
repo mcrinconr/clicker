@@ -93,11 +93,11 @@ export default function ProductListScreen(props) {
             <thead>
               <tr className="table-active">
                 <th className="one">ID</th>
-                <th>NAME</th>
-                <th>PRICE</th>
-                <th>CATEGORY</th>
-                <th>BRAND</th>
-                <th>ACTIONS</th>
+                <th>NOMBRE</th>
+                <th>PRECIO</th>
+                <th>CATEGORÍA</th>
+                <th>MARCA</th>
+                <th>ACCIONES</th>
               </tr>
             </thead>
             <tbody>
@@ -118,7 +118,7 @@ export default function ProductListScreen(props) {
                         props.history.push(`/product/${product._id}/edit`)
                       }
                     >
-                      Edit
+                      Editar
                     </button>
                     </div>
                     <div className="col-md-6">
@@ -127,7 +127,7 @@ export default function ProductListScreen(props) {
                       className="small btn btn-secondary"
                       onClick={() => deleteHandler(product)}
                     >
-                      Delete
+                      Eliminar
                     </button>
                     </div>
                     </div>

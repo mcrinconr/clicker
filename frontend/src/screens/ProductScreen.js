@@ -76,7 +76,7 @@ export default function ProductScreen(props) {
                     numReviews={product.numReviews}
                   ></Rating>
                 </li>
-                <li>Price : ${product.price}</li>
+                <li>Precio : ${product.price}</li>
                 <li>
                   Descripción:
                   <p>{product.description}</p>
@@ -156,7 +156,7 @@ export default function ProductScreen(props) {
                         value={rating}
                         onChange={(e) => setRating(e.target.value)}
                       >
-                        <option value="">Select...</option>
+                        <option value="">Seleccionar...</option>
                         <option value="1">1- Malo</option>
                         <option value="2">2- Regular</option>
                         <option value="3">3- Bueno</option>

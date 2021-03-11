@@ -27,11 +27,11 @@ export default function OrderHistoryScreen(props) {
           <thead>
           <tr className="table-active">
             <th className="one">ID</th>
-            <th className="one">DATE</th>
+            <th className="one">FECHA</th>
             <th>TOTAL</th>
-            <th className="two">PAID</th>
-            <th>DELIVERED</th>
-            <th>ACTIONS</th>
+            <th className="two">PAGADO</th>
+            <th>ENVIADO</th>
+            <th>ACCIONES</th>
           </tr>
           </thead>
           <tbody>
@@ -54,7 +54,7 @@ export default function OrderHistoryScreen(props) {
                       props.history.push(`/order/${order._id}`);
                     }}
                   >
-                    Details
+                    Detalles
                   </button>
                 </td>
               </tr>
